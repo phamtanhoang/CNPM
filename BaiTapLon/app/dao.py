@@ -1,6 +1,6 @@
 import hashlib
-
 from flask_login import current_user
+from sqlalchemy import func
 
 from app import db
 from app.models import HangMayBay, SanBay, ChuyenBay, TuyenBay, NguoiDung, UserRole, BangDonGia, HangVe, SanBayDung, \
@@ -94,10 +94,21 @@ def load_sanbaydungs():
 
 
 def add_ticket(tennguoidi=None, cccd=None, bangdongia=None):
-    r = VeChuyenBay(tennguoidi=tennguoidi, cccd=cccd, nguoidung_ma=current_user, bangdongia=bangdongia)
+    r = VeChuyenBay(tennguoidi=tennguoidi, cccd=cccd, nguoidung_ma=current_user.id, bangdongia_ma=bangdongia)
     db.session.add(r)
     db.session.commit()
 
+
+def flightroute_stats(from_date=None, to_date=None):
+    query = db.session.query(TuyenBay.id, TuyenBay.ten, func.sum(BangDonGia.gia), func.count(ChuyenBay.id)) \
+        .join(ChuyenBay, ChuyenBay.tuyenbay_ma.__eq__(TuyenBay.id)) \
+        .join(BangDonGia, BangDonGia.chuyenbay_ma.__eq__(ChuyenBay.id)) \
+        .join(VeChuyenBay, VeChuyenBay.bangdongia_ma.__eq__(BangDonGia.id))
+    if from_date:
+        query = query.filter(VeChuyenBay.Ngaydat.__ge__(from_date))
+    if to_date:
+        query = query.filter(VeChuyenBay.Ngaydat.__le__(to_date))
+    return query.group_by(TuyenBay.ten).order_by(TuyenBay.id).all()
 
 
 

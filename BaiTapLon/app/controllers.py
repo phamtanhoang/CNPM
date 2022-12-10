@@ -110,7 +110,10 @@ def logout_my_user():
     return redirect('/')
 
 
-# def pay():
-#     err_msg = ''
-#
-#     return
+def pay():
+    bangdongia = request.args.get("bangdongia")
+    tenhanhkhach = request.args.get("tenhanhkhach")
+    cccd = request.args.get("cccd")
+    dao.add_ticket(tenhanhkhach, cccd, bangdongia)
+    return redirect('/')
+

@@ -1,5 +1,5 @@
-from flask import redirect
-from app import admin, db
+from flask import redirect, request
+from app import admin, db, dao
 from app.models import HangMayBay, SanBay, TuyenBay, ChuyenBay, SanBayDung, BangDonGia, NguoiDung, HangVe, VeChuyenBay, \
     UserRole
 from flask_admin.contrib.sqla import ModelView
@@ -22,9 +22,10 @@ class Authenticated2View(BaseView):
         return current_user.is_authenticated
 
 
-class Authenticated3View(BaseView):
+class Authenticated2ModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.loainguoidung == UserRole.STAFF
+        return current_user.is_authenticated and (current_user.loainguoidung == UserRole.STAFF
+                                                  or current_user.loainguoidung == UserRole.ADMIN)
 
 
 class LogoutView(Authenticated2View):
@@ -37,13 +38,8 @@ class LogoutView(Authenticated2View):
 class StatsView(AuthenticatedView):
     @expose('/')
     def index(self):
-        return self.render('admin/stats.html')
-
-
-class LapLichView(Authenticated3View):
-    @expose('/')
-    def index(self):
-        return self.render('admin/schedule.html')
+        stats = dao.flightroute_stats(from_date=request.args.get('from_date'), to_date=request.args.get('to_date'))
+        return self.render('admin/stats.html', stats=stats)
 
 
 class HangMayBayModelView(AuthenticatedModelView):
@@ -82,7 +78,7 @@ class TuyenBayModelView(AuthenticatedModelView):
     page_size = 10
 
 
-class ChuyenBayModelView(AuthenticatedModelView):
+class ChuyenBayModelView(Authenticated2ModelView):
     column_filters = ['tuyenbay']
     can_export = True
     column_labels = {
@@ -149,6 +145,7 @@ class VeChuyenBayModelView(AuthenticatedModelView):
     column_labels = {
         'tennguoidi': 'Tên người đi',
         'cccd': 'Căn cước công dân',
+        'Ngaydat': 'Ngày đặt vé',
         'nguoidung': 'Người dùng',
         'bangdongia': 'Chi tiết chuyến đi',
     }
@@ -165,7 +162,6 @@ admin.add_view(HangVeModelView(HangVe, db.session, name='Hạng vé'))
 admin.add_view(NguoiDungModelView(NguoiDung, db.session, name='Người dùng'))
 admin.add_view(VeChuyenBayModelView(VeChuyenBay, db.session, name='Vé'))
 admin.add_view(StatsView(name='BC-TK'))
-admin.add_view(LapLichView(name='Lập lịch chuyến bay'))
 admin.add_view(LogoutView(name='Đăng xuất'))
 
 

@@ -117,6 +117,7 @@ class VeChuyenBay(BaseModel):
     cccd = Column(String(20), nullable=False)
     nguoidung_ma = Column(Integer, ForeignKey(NguoiDung.id), nullable=False)
     bangdongia_ma = Column(Integer, ForeignKey(BangDonGia.id), nullable=False)
+    Ngaydat = Column(DateTime, default=datetime.now())
 
 
 if __name__ == '__main__':
@@ -175,7 +176,7 @@ if __name__ == '__main__':
         # t2 = TuyenBay(ten="Tuyến 2", sanbaydi_ma=2, sanbayden_ma=3)
         # t3 = TuyenBay(ten="Tuyến 3", sanbaydi_ma=3, sanbayden_ma=4)
         # t4 = TuyenBay(ten="Tuyến 4", sanbaydi_ma=4, sanbayden_ma=5)
-        # t5 = TuyenBay(ten="Tuyến 5", sanbaydi_ma=6, sanbayden_ma=6)
+        # t5 = TuyenBay(ten="Tuyến 5", sanbaydi_ma=5, sanbayden_ma=6)
         # db.session.add_all([t1, t2, t3, t4, t5])
         # db.session.commit()
         #
@@ -216,7 +217,7 @@ if __name__ == '__main__':
         # b4 = BangDonGia(hangve_ma=1, chuyenbay_ma=3, gia=1300000, soghe=30)
         # b5 = BangDonGia(hangve_ma=2, chuyenbay_ma=3, gia=1000000, soghe=20)
         # b6 = BangDonGia(hangve_ma=1, chuyenbay_ma=4, gia=1000000, soghe=35)
-        # b7 = BangDonGia(hangve_ma=2, chuyenbay_ma=4, gia=7500000, soghe=10)
+        # b7 = BangDonGia(hangve_ma=2, chuyenbay_ma=4, gia=1500000, soghe=10)
         # b8 = BangDonGia(hangve_ma=1, chuyenbay_ma=5, gia=1000000, soghe=40)
         # b9 = BangDonGia(hangve_ma=1, chuyenbay_ma=6, gia=1300000, soghe=30)
         # b10 = BangDonGia(hangve_ma=2, chuyenbay_ma=7, gia=1000000, soghe=20)
