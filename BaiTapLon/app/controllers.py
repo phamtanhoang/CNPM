@@ -7,14 +7,16 @@ import cloudinary.uploader
 
 def index():
     airlines = dao.load_airlines()
-    return render_template('index.html', airlines=airlines)
+    airports = dao.load_sanbays()
+    return render_template('index.html', airlines=airlines, airports=airports)
 
 
 def airline():
     airlines = dao.load_airlines()
     airline_id = request.args.get("airline_id")
     b = dao.get_airline_by_id(airline_id)
-    return render_template('airline.html', airlines=airlines, b=b)
+    airports = dao.load_sanbays()
+    return render_template('airline.html', airlines=airlines, b=b, airports=airports)
 
 
 def flight():
@@ -75,6 +77,9 @@ def register():
 
         if password.__eq__(confirm):
             avatar = ''
+            if request.files:
+                res = cloudinary.uploader.upload(request.files['avatar'])
+                avatar = res['secure_url']
             try:
                 dao.register(name=request.form['name'],
                              username=request.form['username'],
@@ -82,6 +87,7 @@ def register():
                              avatar=avatar)
 
                 return redirect('/login')
+
             except:
                 err_msg = 'Có lỗi xảy ra! Vui lòng quay lại sau!'
         else:

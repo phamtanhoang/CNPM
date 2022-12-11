@@ -23,7 +23,12 @@
                                 <div class="form-group">
                                     <span class="form-label">Điểm đi</span>
                                     <input class="form-control" type="text" id="airport1" name="airport1"
-                                           placeholder="Nhập sân bay đi" required=""/>
+                                           list="datalistOptions" placeholder="Nhập sân bay đi" required=""/>
+                                    <datalist  id="datalistOptions">
+                                        {% for airport in airports%}
+                                        <option value="{{ airport.ten }}">
+                                        {% endfor %}
+                                    </datalist>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -40,7 +45,12 @@
                                 <div class="form-group">
                                     <span class="form-label">Điểm đến</span>
                                     <input class="form-control" type="text" id="airport2" name="airport2"
-                                           placeholder="Nhập sân bay đến" required=""/>
+                                           list="datalistOptions2" placeholder="Nhập sân bay đến" required=""/>
+                                    <datalist  id="datalistOptions2">
+                                        {% for airport in airports%}
+                                        <option value="{{ airport.ten }}">
+                                        {% endfor %}
+                                    </datalist>
                                 </div>
                             </div>
                             <div class="col-md-3">
