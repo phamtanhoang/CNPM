@@ -59,6 +59,7 @@ class HangMayBayModelView(AuthenticatedModelView):
 class SanBayModelView(AuthenticatedModelView):
     column_filters = ['ten']
     column_searchable_list = ['ten']
+    can_view_details = True
     can_export = True
     column_labels = {
         'ten': 'Tên sân bay',
@@ -69,6 +70,7 @@ class SanBayModelView(AuthenticatedModelView):
 class TuyenBayModelView(AuthenticatedModelView):
     column_filters = ['ten', 'sanbaydi', 'sanbayden']
     column_searchable_list = ['ten']
+    can_view_details = True
     can_export = True
     column_labels = {
         'ten': 'Tên tuyến bay',
@@ -80,6 +82,7 @@ class TuyenBayModelView(AuthenticatedModelView):
 
 class ChuyenBayModelView(Authenticated2ModelView):
     column_filters = ['tuyenbay']
+    can_view_details = True
     can_export = True
     column_labels = {
         'giodi': 'Giờ đi',
@@ -92,6 +95,7 @@ class ChuyenBayModelView(Authenticated2ModelView):
 
 class SanBayDungModelView(AuthenticatedModelView):
     column_filters = ['chuyenbay_ma']
+    can_view_details = True
     can_export = True
     column_labels = {
         'thoigiandung': 'Thời gian dừng',
@@ -103,6 +107,7 @@ class SanBayDungModelView(AuthenticatedModelView):
 
 class ChiTietChuyenBayModelView(AuthenticatedModelView):
     column_filters = ['chuyenbay_ma']
+    can_view_details = True
     can_export = True
     column_labels = {
         'gia': 'Giá',
@@ -116,6 +121,7 @@ class ChiTietChuyenBayModelView(AuthenticatedModelView):
 
 class HangVeModelView(AuthenticatedModelView):
     can_export = True
+    can_view_details = True
     column_labels = {
         'ten': 'Tên hạng vé'
     }
@@ -124,6 +130,7 @@ class HangVeModelView(AuthenticatedModelView):
 
 class NguoiDungModelView(AuthenticatedModelView):
     column_filters = ['loainguoidung']
+    can_view_details = True
     can_export = True
     column_exclude_list = ['matkhau', 'anhdaidien']
     column_searchable_list = ['ten']
